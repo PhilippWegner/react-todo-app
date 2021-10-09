@@ -2,6 +2,8 @@ import logo from "./logo.svg";
 import "./App.css";
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
+import TodoItem from "./Todo/TodoItem";
+import TodoList from "./Todo/TodoList";
 
 function App() {
   const [todos, setTodos] = useState([
@@ -22,17 +24,11 @@ function App() {
     }
   };
 
-  const toggleTodo = (id) => {
+  const handleToggleTodo = (id) => {
     setTodos(
       todos.map((t) => {
         if (t.id === id) {
           return { ...t, done: !t.done };
-          // if (t.done === false) {
-          //   return { ...t, done: true };
-          // }
-          // else {
-          //   return { ...t, done: false };
-          // }
         }
         return t;
       })
@@ -63,45 +59,19 @@ function App() {
           />
         </div>
 
-        <div className="TodoListContainer">
-          <h2>Zu erledigen:</h2>
-          {activeTodos.map((t) => (
-            <div key={t.id} className="TodoItemContainer">
-              <input
-                checked={t.done}
-                onChange={() => toggleTodo(t.id)}
-                type="checkbox"
-              ></input>
-              <p className="TodoItemText">{t.title}</p>
-              <button
-                onClick={() => handleDeleteTodo(t.id)}
-                className="TodoItemDeleteButton"
-              >
-                &#x2715;
-              </button>
-            </div>
-          ))}
-        </div>
+        <TodoList
+          title="Zu erledigen:"
+          list={activeTodos}
+          onDeleteTodo={handleDeleteTodo}
+          onToggleTodo={handleToggleTodo}
+        />
 
-        <div className="TodoListContainer">
-          <h2>Erledigt:</h2>
-          {doneTodos.map((t) => (
-            <div key={t.id} className="TodoItemContainer">
-              <input
-                checked={t.done}
-                onChange={() => toggleTodo(t.id)}
-                type="checkbox"
-              ></input>
-              <p className="TodoItemText">{t.title}</p>
-              <button
-                onClick={() => handleDeleteTodo(t.id)}
-                className="TodoItemDeleteButton"
-              >
-                &#x2715;
-              </button>
-            </div>
-          ))}
-        </div>
+        <TodoList
+          title="Erledigt:"
+          list={doneTodos}
+          onDeleteTodo={handleDeleteTodo}
+          onToggleTodo={handleToggleTodo}
+        />
       </div>
     </div>
   );
