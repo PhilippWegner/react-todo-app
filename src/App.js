@@ -8,6 +8,10 @@ function App() {
     { title: "Test Todo", id: uuid(), done: false },
   ]);
 
+  const handleDeleteTodo = (id) => {
+    setTodos(todos.filter((t) => t.id !== id));
+  };
+
   const handleAddTodo = (event) => {
     if (event.key === "Enter") {
       setTodos([
@@ -41,10 +45,15 @@ function App() {
         <div className="TodoListContainer">
           <h2>Zu erledigen:</h2>
           {todos.map((t) => (
-            <div className="TodoItemContainer">
+            <div key={t.id} className="TodoItemContainer">
               <input type="checkbox"></input>
               <p className="TodoItemText">{t.title}</p>
-              <button className="TodoItemDeleteButton">&#x2715;</button>
+              <button
+                onClick={() => handleDeleteTodo(t.id)}
+                className="TodoItemDeleteButton"
+              >
+                &#x2715;
+              </button>
             </div>
           ))}
         </div>
