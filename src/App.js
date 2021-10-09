@@ -10,6 +10,8 @@ function App() {
     { title: "Test Todo", id: uuid(), done: false },
   ]);
 
+  const [searchQuery, setSearchQuery] = useState("");
+
   const handleDeleteTodo = (id) => {
     setTodos(todos.filter((t) => t.id !== id));
   };
@@ -37,6 +39,9 @@ function App() {
 
   const activeTodos = todos.filter(({ done }) => !done);
   const doneTodos = todos.filter(({ done }) => done);
+  const filteredTodos = todos.filter((t) =>
+    t.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="App">
@@ -46,7 +51,11 @@ function App() {
           <h1>React Todo</h1>
         </div>
         <div className="SearchInputContainer">
-          <input className="InputItem" placeholder="Suche" />
+          <input
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="InputItem"
+            placeholder="Suche"
+          />
         </div>
       </div>
 
@@ -59,19 +68,30 @@ function App() {
           />
         </div>
 
-        <TodoList
-          title="Zu erledigen:"
-          list={activeTodos}
-          onDeleteTodo={handleDeleteTodo}
-          onToggleTodo={handleToggleTodo}
-        />
-
-        <TodoList
-          title="Erledigt:"
-          list={doneTodos}
-          onDeleteTodo={handleDeleteTodo}
-          onToggleTodo={handleToggleTodo}
-        />
+        {searchQuery ? (
+          <TodoList
+            title="Suchergebnisse:"
+            list={filteredTodos}
+            onDeleteTodo={handleDeleteTodo}
+            onToggleTodo={handleToggleTodo}
+          />
+        ) : (
+          <>
+            {" "}
+            <TodoList
+              title="Zu erledigen:"
+              list={activeTodos}
+              onDeleteTodo={handleDeleteTodo}
+              onToggleTodo={handleToggleTodo}
+            />
+            <TodoList
+              title="Erledigt:"
+              list={doneTodos}
+              onDeleteTodo={handleDeleteTodo}
+              onToggleTodo={handleToggleTodo}
+            />
+          </>
+        )}
       </div>
     </div>
   );
