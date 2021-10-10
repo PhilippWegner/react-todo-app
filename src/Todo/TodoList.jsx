@@ -7,7 +7,7 @@ const TodoList = ({ list, title, onDeleteTodo, onToggleTodo }) => {
       <h2>{title}</h2>
       {list.map((t) => (
         <TodoItem
-          key={t.key}
+          key={t.id}
           id={t.id}
           done={t.done}
           title={t.title}
