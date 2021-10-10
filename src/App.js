@@ -20,43 +20,23 @@ function App() {
   const dispatch = useDispatch();
 
   const handleDeleteTodo = (id) => {
-    // setTodos(todos.filter((t) => t.id !== id));
     dispatch(deleteTodo(id));
   };
 
   const handleAddTodo = (event) => {
     if (event.key === "Enter") {
       dispatch(addTodo({ title: event.target.value, id: uuid(), done: false }));
-      // setTodos([
-      //   ...todos,
-      //   { title: event.target.value, id: uuid(), done: false },
-      // ]);
+
       event.target.value = "";
     }
   };
 
   const handleToggleTodo = (id) => {
     dispatch(toggleTodo(id));
-    // setTodos(
-    //   todos.map((t) => {
-    //     if (t.id === id) {
-    //       return { ...t, done: !t.done };
-    //     }
-    //     return t;
-    //   })
-    // );
   };
 
   const handleChangeTodo = (todo) => {
     dispatch(changeTodoTitle(todo));
-    // setTodos(
-    //   todos.map((t) => {
-    //     if (t.id === todo.id) {
-    //       return todo;
-    //     }
-    //     return t;
-    //   })
-    // );
   };
 
   return (
