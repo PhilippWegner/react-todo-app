@@ -4,8 +4,9 @@ import TodoList from "../Todo/TodoList";
 import { v4 as uuid } from "uuid";
 import { addTodo } from "../Reducer/todoSlice";
 
-const Todo = ({ searchQuery }) => {
+const Todo = () => {
   const todoList = useSelector((state) => state.todo.list);
+  const searchQuery = useSelector((state) => state.todo.searchQuery);
   const dispatch = useDispatch();
 
   const activeTodos = todoList.filter(({ done }) => !done);
