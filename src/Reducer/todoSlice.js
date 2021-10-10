@@ -1,4 +1,4 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
 
 const initialState = {
@@ -16,9 +16,7 @@ export const todoSlice = createSlice({
   initialState,
   reducers: {
     addTodo: (state, action) => {
-      //   console.log(current(state));
       state.list.push(action.payload);
-      //   return { ...state, list: [...state.list, action.payload] };
     },
     toggleTodo: (state, action) => {
       const todo = state.list.find((t) => t.id === action.payload);
