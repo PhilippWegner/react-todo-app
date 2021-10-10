@@ -1,14 +1,9 @@
 {
   "todos": [
     {
-      "title": "test todo",
-      "id": 1,
-      "done": false
-    },
-    {
-      "title": "hallo philipp",
+      "title": "hallo",
       "done": false,
-      "id": 2
+      "id": 1
     }
   ]
 }

@@ -1,19 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router";
-import { changeTodoTitle } from "../Reducer/todoSlice";
+import { putTodo } from "../Reducer/todoSlice";
 
 const TodoDetails = () => {
   const todoList = useSelector((state) => state.todo.list);
   const dispatch = useDispatch();
   const { id } = useParams();
   const history = useHistory();
-  const todo = todoList.find((t) => t.id === id);
-  const [title, setTitle] = useState(todo.title);
+
+  useEffect(() => {
+    const todo = todoList.find((t) => t.id === Number(id));
+    if (todo) {
+      setTitle(todo.title);
+      setDone(todo.done);
+    }
+  }, [id, todoList]);
+
+  const [title, setTitle] = useState("");
+  const [done, setDone] = useState("");
 
   const handleChangeTitle = (e) => {
     if (e.key === "Enter") {
-      dispatch(changeTodoTitle({ ...todo, title }));
+      dispatch(putTodo({ id: Number(id), done, title }));
       history.push("/");
     }
   };

@@ -7,17 +7,61 @@ const initialState = {
   searchQuery: "",
 };
 
+const todoPath = "http://localhost:3004/todos";
+
+// START Thunk
 export const postTodo = createAsyncThunk(
   "todo/postTodo",
   async (todo, { dispatch }) => {
     try {
-      const response = await axios.post("http://localhost:3004/todos", todo);
+      const response = await axios.post(todoPath, todo);
       dispatch(addTodo(response.data));
     } catch (error) {
       console.log(error);
     }
   }
 );
+
+export const getTodoList = createAsyncThunk(
+  "todo/getTodoList",
+  async (option, { dispatch }) => {
+    try {
+      const response = await axios.get(todoPath);
+      dispatch(setTodoList(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const deleteTodo = createAsyncThunk(
+  "todo/deleteTodo",
+  async (id, { dispatch }) => {
+    try {
+      // const response = await axios.delete(`${todoPath}/${id}`);
+      await axios.delete(`${todoPath}/${id}`);
+      dispatch(removeTodo(id));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+// putToggleTodo und putChangeTodoTitle ist faktisch das Selbe!
+export const putTodo = createAsyncThunk(
+  "todo/putTodo",
+  async (todo, { dispatch }) => {
+    console.log("todo:", todo);
+    const { id } = todo;
+    try {
+      const response = await axios.put(`${todoPath}/${id}`, todo);
+      dispatch(changeTodo(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+// ENDE Thunk
 
 export const todoSlice = createSlice({
   name: "todo",
@@ -26,23 +70,18 @@ export const todoSlice = createSlice({
     addTodo: (state, action) => {
       state.list.push(action.payload);
     },
-    toggleTodo: (state, action) => {
-      const todo = state.list.find((t) => t.id === action.payload);
-      const todoIndex = state.list.indexOf(todo);
-      state.list[todoIndex] = { ...todo, done: !todo.done };
+    setTodoList: (state, action) => {
+      state.list = action.payload;
     },
-    deleteTodo: (state, action) => {
+    removeTodo: (state, action) => {
       const todoIndex = state.list.findIndex((t) => t.id === action.payload);
       state.list.splice(todoIndex, 1);
     },
-    changeTodoTitle: (state, action) => {
-      const todo = state.list.find((t) => t.id === action.payload.id);
-      const todoIndex = state.list.indexOf(todo);
-
-      state.list[todoIndex] = {
-        ...todo,
-        title: action.payload.title,
-      };
+    // toggleTodo und changeTodoTitle ist faktisch das Selbe!
+    changeTodo: (state, action) => {
+      console.log("action.payload:", action.payload);
+      const todoIndex = state.list.findIndex((t) => t.id === action.payload.id);
+      state.list[todoIndex] = action.payload;
     },
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
@@ -50,12 +89,7 @@ export const todoSlice = createSlice({
   },
 });
 
-export const {
-  addTodo,
-  toggleTodo,
-  deleteTodo,
-  changeTodoTitle,
-  setSearchQuery,
-} = todoSlice.actions;
+export const { addTodo, removeTodo, setSearchQuery, setTodoList, changeTodo } =
+  todoSlice.actions;
 
 export default todoSlice.reducer;
