@@ -5,48 +5,58 @@ import Navbar from "./Components/Navbar";
 import { Switch, Route } from "react-router-dom";
 import TodoDetails from "./Screens/TodoDetails";
 import { v4 as uuid } from "uuid";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  addTodo,
+  changeTodoTitle,
+  deleteTodo,
+  toggleTodo,
+} from "./Reducer/todoSlice";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [todos, setTodos] = useState([
-    { title: "Test Todo", id: uuid(), done: false },
-  ]);
+  const todos = useSelector((state) => state.todo.list);
+  const dispatch = useDispatch();
 
   const handleDeleteTodo = (id) => {
-    setTodos(todos.filter((t) => t.id !== id));
+    // setTodos(todos.filter((t) => t.id !== id));
+    dispatch(deleteTodo(id));
   };
 
   const handleAddTodo = (event) => {
     if (event.key === "Enter") {
-      setTodos([
-        ...todos,
-        { title: event.target.value, id: uuid(), done: false },
-      ]);
+      dispatch(addTodo({ title: event.target.value, id: uuid(), done: false }));
+      // setTodos([
+      //   ...todos,
+      //   { title: event.target.value, id: uuid(), done: false },
+      // ]);
       event.target.value = "";
     }
   };
 
   const handleToggleTodo = (id) => {
-    setTodos(
-      todos.map((t) => {
-        if (t.id === id) {
-          return { ...t, done: !t.done };
-        }
-        return t;
-      })
-    );
+    dispatch(toggleTodo(id));
+    // setTodos(
+    //   todos.map((t) => {
+    //     if (t.id === id) {
+    //       return { ...t, done: !t.done };
+    //     }
+    //     return t;
+    //   })
+    // );
   };
 
   const handleChangeTodo = (todo) => {
-    setTodos(
-      todos.map((t) => {
-        if (t.id === todo.id) {
-          return todo;
-        }
-        return t;
-      })
-    );
+    dispatch(changeTodoTitle(todo));
+    // setTodos(
+    //   todos.map((t) => {
+    //     if (t.id === todo.id) {
+    //       return todo;
+    //     }
+    //     return t;
+    //   })
+    // );
   };
 
   return (
