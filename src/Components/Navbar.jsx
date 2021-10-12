@@ -11,7 +11,7 @@ const Navbar = () => {
       <Link to="/">
         <div className="HeaderContent">
           <img style={{ width: 120 }} src={logo} alt="React-Logo" />
-          <h1>React Todo</h1>
+          <h1>React Todo.</h1>
         </div>
       </Link>
       <div className="SearchInputContainer">
